@@ -27,29 +27,33 @@ class MainActivity : AppCompatActivity() {
         val buttonSwitchPage = findViewById<Button>(R.id.button_switchpage)
         val buttonBrowser = findViewById<Button>(R.id.button_browser)
 
-        buttonCountUp.setOnClickListener(View.OnClickListener {
+        if (savedInstanceState != null) {
+            mCount = savedInstanceState.getInt("count_key", 0)
+            mShowCount.text = mCount.toString()
+        }
+
+        buttonCountUp.setOnClickListener {
             mCount++
             Log.d("mCount", Integer.toString(mCount))
-            if (mShowCount != null)
-                mShowCount.text = mCount.toString()
-        })
+            mShowCount.text = mCount.toString()
+        }
 
-        buttonToast.setOnClickListener(View.OnClickListener {
-            val tulisan: String = mShowCount?.text.toString()
+        buttonToast.setOnClickListener {
+            val tulisan: String = mShowCount.text.toString()
             val toast: Toast = Toast.makeText(this, "Angka yang dimunculkan " + tulisan, Toast.LENGTH_LONG)
             toast.show()
-        })
+        }
 
-        buttonSwitchPage.setOnClickListener(View.OnClickListener {
+        buttonSwitchPage.setOnClickListener {
             val intent = Intent(this, MainActivity2::class.java)
             startActivity(intent)
-        })
+        }
 
-        buttonBrowser.setOnClickListener(View.OnClickListener {
+        buttonBrowser.setOnClickListener {
             val intentbrowse = Intent(Intent.ACTION_VIEW)
             intentbrowse.setData(Uri.parse("https://www.google.com/"))
             startActivity(intentbrowse)
-        })
+        }
 
         val mainView = findViewById<View>(R.id.main)
         if (mainView != null) {
@@ -59,5 +63,10 @@ class MainActivity : AppCompatActivity() {
                 insets
             }
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putInt("count_key", mCount)
     }
 }
